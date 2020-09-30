@@ -1,1 +1,1 @@
-Analysis of information processes, labs
+Analysis of information processes, project
