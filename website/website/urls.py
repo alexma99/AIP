@@ -18,6 +18,6 @@ from django.urls import path
 from website import creationdb
 
 urlpatterns = [
-    path('', creationdb.page, name='creationdb'),
+    path('creationdb/', creationdb.page, name='creationdb'),
     path('admin/', admin.site.urls),
 ]
