@@ -17,4 +17,4 @@ def page(request):
     """
     con.commit()
     con.close()
-    return HttpResponse('Базы данных загружены')
+    return HttpResponse('База данных загружена')
