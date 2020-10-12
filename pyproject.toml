@@ -2,7 +2,7 @@
 name = "studbase"
 version = "0.1.0"
 description = ""
-authors = ["David <42513699+David1105@users.noreply.github.com>"]
+authors = [" "]
 
 [tool.poetry.dependencies]
 python = "^3.8.5"
