@@ -1,0 +1,128 @@
+CREATE DATABASE academic_performance;
+
+CREATE TABLE kafedra (
+	id_kaf BIGSERIAL NOT NULL PRIMARY KEY,
+	zaved VARCHAR(20),
+	name VARCHAR(30)
+);
+
+CREATE TABLE group_st(
+	id_group BIGSERIAL NOT NULL PRIMARY KEY,
+	course INT,
+	id_kaf BIGINT REFERENCES kafedra (id_kaf)
+);
+
+CREATE TABLE student(
+id_stud BIGSERIAL NOT NULL PRIMARY KEY,
+first_name VARCHAR(20),
+last_name VARCHAR(20),
+otchestvo VARCHAR(20),
+date_of_birth DATE,
+id_group BIGINT REFERENCES group_st (id_group)
+);
+
+CREATE TABLE semester(
+	id_sem BIGSERIAL NOT NULL PRIMARY KEY,
+	year INT
+);
+
+CREATE TABLE discipline(
+	id_disc BIGSERIAL NOT NULL PRIMARY KEY,
+	name VARCHAR(20),
+	id_kaf BIGINT REFERENCES kafedra (id_kaf)
+);
+
+CREATE TABLE prepod (
+	id_prep BIGSERIAL NOT NULL PRIMARY KEY,
+	first_name VARCHAR(20),
+	last_name VARCHAR(20),
+	otchestvo VARCHAR(20),
+	degree VARCHAR(20),
+	id_disc BIGINT REFERENCES discipline (id_disc)
+);
+
+
+
+CREATE TABLE result_of_midterms (
+	id_per BIGSERIAL NOT NULL PRIMARY KEY,
+	mark INT,
+	date DATE,
+	id_stud BIGINT REFERENCES student (id_stud),
+	id_sem BIGINT REFERENCES semester (id_sem),
+	id_disc BIGINT REFERENCES discipline (id_disc),
+	id_prep BIGINT REFERENCES prepod (id_prep)
+);
+
+ALTER TABLE discipline ADD id_prep BIGINT REFERENCES prepod(id_prep);
+ALTER TABLE prepod ADD id_kaf BIGINT REFERENCES kafedra(id_kaf);
+
+INSERT INTO kafedra VALUES (1, 'lebedev', 'fizika');
+INSERT INTO kafedra VALUES (2, 'volkova', 'termech');
+INSERT INTO kafedra VALUES (3, 'alekseev', 'teoriya veroyatnostej');
+INSERT INTO kafedra VALUES (4, 'romanova', 'matematika');
+INSERT INTO kafedra VALUES (5, 'zajcev', 'informatika');
+INSERT INTO kafedra VALUES (6, 'stepanov', 'programmirovanie');
+
+INSERT INTO student VALUES (1, 'ivan', 'istomin','evgenevich','1998-02-12',1);
+INSERT INTO student VALUES (2, 'pavel', 'suvorov','yurevich','1999-11-02',1);
+INSERT INTO student VALUES (3, 'petr', 'grishin','sergeevich','1999-02-01',2);
+INSERT INTO student VALUES (4, 'olga', 'sergeeva','ivanovna','1999-10-04',3);
+INSERT INTO student VALUES (5, 'mariya', 'emec','ivanovna','1995-05-09',3);
+INSERT INTO student VALUES (6, 'taisiya', 'ivanova','pavlovna','1994-04-02',4);
+INSERT INTO student VALUES (7, 'alexandra', 'zolotova','vyacheslavovna','1997-11-19',5);
+INSERT INTO student VALUES (8, 'petr', 'sergeev','mihailovich','1998-05-25',6);
+INSERT INTO student VALUES (9, 'petr', 'arbuzov','valerevich','1999-08-07',6);
+INSERT INTO student VALUES (10, 'olga', 'komarova','sergeevna','1998-11-03',6);
+
+
+INSERT INTO group_st VALUES (1, 1,4);
+INSERT INTO group_st VALUES (2, 2,3);
+INSERT INTO group_st VALUES (3, 1,1);
+INSERT INTO group_st VALUES (4, 1,2);
+INSERT INTO group_st VALUES (5, 2,5);
+INSERT INTO group_st VALUES (6, 2,3);
+
+
+INSERT INTO semester VALUES (1, 2016);
+INSERT INTO semester VALUES (2, 2016);
+INSERT INTO semester VALUES (3, 2017);
+INSERT INTO semester VALUES (4, 2017);
+
+INSERT INTO discipline VALUES (1, 'termech',1);
+INSERT INTO discipline VALUES (2, 'matan',4);
+INSERT INTO discipline VALUES (3, 'os',3);
+INSERT INTO discipline VALUES (4, 'informatika',5);
+INSERT INTO discipline VALUES (5, 'bd',6);
+INSERT INTO discipline VALUES (6, 'diffury',2);
+
+
+INSERT INTO prepod VALUES (1, 'boris', 'bardin','sabirovich','docent',1,2);
+INSERT INTO prepod VALUES (2, 'artur', 'puntus','agafonovich','professor',6,4);
+INSERT INTO prepod VALUES (3, 'alexandr', 'semenov','sergeevich','docent',3,6);
+INSERT INTO prepod VALUES (4, 'elena', 'ivanova','pavlovna','docent',2,4);
+INSERT INTO prepod VALUES (5, 'valentin', 'zajcev','evgenevich','professor',4,5);
+INSERT INTO prepod VALUES (6, 'vladimir', 'lukin','nikolaevich','docent',5,5);
+
+
+		   
+INSERT INTO discipline (id_disc, id_prep)
+VALUES (1,2),(2,4),(3,6),(4,5),(5,5),(6,4)
+ON CONFLICT (id_disc) 
+DO 
+   UPDATE SET id_prep=EXCLUDED.id_prep;
+		
+INSERT INTO result_of_midterms VALUES (1, 3, '2020-12-20',1,1,2,6);
+INSERT INTO result_of_midterms VALUES (2, 2, '2021-06-12',1,2,2,6);
+INSERT INTO result_of_midterms VALUES (3, 3, '2020-12-12',2,1,1,5);
+INSERT INTO result_of_midterms VALUES (4, 3, '2020-12-24',3,1,6,3);
+INSERT INTO result_of_midterms VALUES (5, 4, '2021-06-07',3,2,4,6);
+INSERT INTO result_of_midterms VALUES (6, 5, '2021-06-10',3,2,2,2);
+INSERT INTO result_of_midterms VALUES (7, 5, '2020-12-22',4,3,3,4);
+INSERT INTO result_of_midterms VALUES (8, 2, '2021-06-18',5,4,3,4);
+INSERT INTO result_of_midterms VALUES (9, 4, '2021-06-18',5,3,5,1);
+INSERT INTO result_of_midterms VALUES (10, 3, '2021-06-13',6,4,1,1);
+INSERT INTO result_of_midterms VALUES (11, 3, '2021-06-11',7,4,5,5);
+INSERT INTO result_of_midterms VALUES (12, 5, '2020-12-21',8,1,5,5);
+INSERT INTO result_of_midterms VALUES (13, 2, '2021-06-25',9,1,6,5);
+INSERT INTO result_of_midterms VALUES (14, 2, '2020-12-12',10,2,3,3);
+INSERT INTO result_of_midterms VALUES (15, 4, '2020-12-15',10,3,3,1);
