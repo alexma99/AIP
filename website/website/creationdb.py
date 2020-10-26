@@ -3,7 +3,7 @@ import psycopg2
 
 def page(request):
     con = psycopg2.connect(
-        database="postgres",
+        database="DataBase",
         user="postgres",
         password="admin",
         host="127.0.0.1",
@@ -66,4 +66,4 @@ CREATE TABLE result_of_midterms (
     ALTER TABLE prepod ADD id_kaf BIGINT REFERENCES kafedra(id_kaf);''')
     con.commit()
     con.close()
-    return HttpResponse('Базы данных загружены')
+    return HttpResponse('Таблицы созданы')
