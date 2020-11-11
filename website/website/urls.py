@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from website import creationdb
+from website import creationdb, uploadcsv, connect
 
 urlpatterns = [
     path('creationdb/', creationdb.page, name='creationdb'),
+    path('connect/', connect.page, name='connect'),
+    path('uploadcsv/', uploadcsv.page, name='uploadcsv'),
     path('admin/', admin.site.urls),
 ]
