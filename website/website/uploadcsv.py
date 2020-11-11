@@ -1,6 +1,6 @@
 from django.http import HttpResponse
+from sqlalchemy import create_engine
 import pandas as pd
-import psycopg2
 
 
 def is_number(strng):
@@ -11,8 +11,8 @@ def is_number(strng):
         return False
 
 
-def csv(filename, cur):
-    filepath = r"D:\PycharmProjects\StudBase\csv\/"+filename
+def csv(filename, engine):
+    filepath = r"./csv/"+filename
     df = pd.read_csv(filepath, header=None)
     n = df.iloc[:, 1].size
     m = df.iloc[1, :].size
@@ -23,27 +23,34 @@ def csv(filename, cur):
                 string += str(df.iloc[k, j]) + ", "
             else:
                 string += "'" + str(df.iloc[k, j]) + "', "
-        cur.execute('''INSERT INTO '''+filename+''' VALUES ('''+string[:-2]+''');''')
+        engine.execute('''INSERT INTO '''+filename+''' VALUES ('''+string[:-2]+''');''')
     return
 
 
 def page(request):
-    con = psycopg2.connect(
-        database = "btj4y9qiryp7r9sizol0",
-        user = "uuugtksqbcxtzbutebat",
-        password = "VOLUCrmJtrbgdruOKPWw",
-        host = "btj4y9qiryp7r9sizol0-postgresql.services.clever-cloud.com",
-        port = "5432"
+
+    database = "btj4y9qiryp7r9sizol0"
+    user = "uuugtksqbcxtzbutebat"
+    pwd = "VOLUCrmJtrbgdruOKPWw"
+    host = "btj4y9qiryp7r9sizol0-postgresql.services.clever-cloud.com"
+    port = "5432"
+
+    conn_string = "{driver}://{user}:{pwd}@{host}:{port}/{database}".format(
+        driver="postgresql+psycopg2",
+        user=user,
+        pwd=pwd,
+        host=host,
+        port=port,
+        database=database,
     )
-    cur = con.cursor()
-    cur.execute('''SET session_replication_role = 'replica';''')  # откл проверку ключей
-    csv('discipline', cur)
-    csv('group_st', cur)
-    csv('kafedra', cur)
-    csv('prepod', cur)
-    csv('semester', cur)
-    csv('student', cur)
-    cur.execute('''SET session_replication_role = 'origin';''')  # вкл проверку ключей
-    con.commit()
-    con.close()
+
+    engine = create_engine(conn_string)
+
+    csv('discipline', engine)
+    csv('group_st', engine)
+    csv('kafedra', engine)
+    csv('prepod', engine)
+    csv('semester', engine)
+    csv('student', engine)
+    engine.close()
     return HttpResponse('Данные загружены')
