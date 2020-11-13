@@ -7,7 +7,6 @@ class Discipline(models.Model):
     id_kaf = models.ForeignKey('Kafedra', models.DO_NOTHING, db_column='id_kaf', blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'discipline'
 
 
@@ -17,7 +16,6 @@ class GroupSt(models.Model):
     id_kaf = models.ForeignKey('Kafedra', models.DO_NOTHING, db_column='id_kaf', blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'group_st'
 
 
@@ -27,7 +25,6 @@ class Kafedra(models.Model):
     name = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'kafedra'
 
 
@@ -40,7 +37,6 @@ class Prepod(models.Model):
     id_disc = models.ForeignKey(Discipline, models.DO_NOTHING, db_column='id_disc', blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'prepod'
 
 
@@ -54,7 +50,6 @@ class ResultOfMidterms(models.Model):
     id_prep = models.ForeignKey(Prepod, models.DO_NOTHING, db_column='id_prep', blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'result_of_midterms'
 
 
@@ -63,7 +58,6 @@ class Semester(models.Model):
     year = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'semester'
 
 
@@ -76,5 +70,4 @@ class Student(models.Model):
     id_group = models.ForeignKey(GroupSt, models.DO_NOTHING, db_column='id_group', blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'student'
