@@ -59,14 +59,6 @@ def student_get(id_stud, engine=connect()):
     return df.to_dict(orient='index')
 
 
-def csv(filename, engine):
-    filepath = r"./csv/"+filename+".csv"
-    df = pd.read_csv(filepath, sep=';', index_col=0)
-    df.to_sql(filename, engine, if_exists="append")
-    time.sleep(3)
-    return
-
-
 app = FastAPI()
 
 
