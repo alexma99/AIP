@@ -1,0 +1,43 @@
+ALTER TABLE kafedra ADD last_edit timestamp default current_timestamp;
+ALTER TABLE group_st ADD last_edit timestamp default current_timestamp;
+ALTER TABLE student ADD last_edit timestamp default current_timestamp;
+ALTER TABLE semester ADD last_edit timestamp default current_timestamp;
+ALTER TABLE discipline ADD last_edit timestamp default current_timestamp;
+ALTER TABLE prepod ADD last_edit timestamp default current_timestamp;
+ALTER TABLE result_of_midterms ADD last_edit timestamp default current_timestamp;
+
+CREATE OR REPLACE FUNCTION update_last_edit()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.last_edit = now(); 
+   RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_table_last_edit BEFORE UPDATE
+    ON kafedra FOR EACH ROW EXECUTE PROCEDURE 
+    update_last_edit();
+
+CREATE TRIGGER update_table_last_edit BEFORE UPDATE
+    ON group_st FOR EACH ROW EXECUTE PROCEDURE 
+    update_last_edit();
+	
+CREATE TRIGGER update_table_last_edit BEFORE UPDATE
+    ON student FOR EACH ROW EXECUTE PROCEDURE 
+    update_last_edit();
+	
+CREATE TRIGGER update_table_last_edit BEFORE UPDATE
+    ON semester FOR EACH ROW EXECUTE PROCEDURE 
+    update_last_edit();
+	
+CREATE TRIGGER update_table_last_edit BEFORE UPDATE
+    ON discipline FOR EACH ROW EXECUTE PROCEDURE 
+    update_last_edit();
+	
+CREATE TRIGGER update_table_last_edit BEFORE UPDATE
+    ON prepod FOR EACH ROW EXECUTE PROCEDURE 
+    update_last_edit();
+	
+CREATE TRIGGER update_table_last_edit BEFORE UPDATE
+    ON result_of_midterms FOR EACH ROW EXECUTE PROCEDURE 
+    update_last_edit();
