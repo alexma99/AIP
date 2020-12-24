@@ -49,7 +49,6 @@ def read(id_group):
 @app.delete("/del-group/{id_group}")
 def delete(id_group):
     GroupSt.objects.filter(pk=id_group).delete()
-    Student.objects.filter(id_group=id_group).delete()
     return "Deleted"
 
 
@@ -61,8 +60,6 @@ def read(id_kaf):
 @app.delete("/del-kaf/{id_kaf}")
 def delete(id_kaf):
     Kafedra.objects.filter(pk=id_kaf).delete()
-    Discipline.objects.filter(id_kaf=id_kaf).delete()
-    GroupSt.objects.filter(id_kaf=id_kaf).delete()
     return "Deleted"
 
 
@@ -121,7 +118,6 @@ def read(id_sem):
 @app.delete("/del-sem/{id_sem}")
 def delete(id_sem):
     Semester.objects.filter(pk=id_sem).delete()
-    ResultOfMidterms.objects.filter(id_sem=id_sem).delete()
     return "Deleted"
 
 
@@ -133,7 +129,6 @@ def read(id_stud):
 @app.delete("/del-stud/{id_stud}")
 def delete(id_stud):
     Student.objects.filter(pk=id_stud).delete()
-    ResultOfMidterms.objects.filter(id_stud=id_stud).delete()
     return "Deleted"
 
 
